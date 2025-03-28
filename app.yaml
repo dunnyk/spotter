@@ -1,0 +1,23 @@
+runtime: python310
+entrypoint: gunicorn -b :$PORT app.wsgi
+
+instance_class: F1
+automatic_scaling:
+  target_cpu_utilization: 0.65
+  min_instances: 1
+  max_instances: 5
+
+env_variables:
+  DJANGO_SETTINGS_MODULE: "app.settings"
+  SECRET_KEY: "{{ secrets.DJANGO_SECRET_KEY }}"
+  DATABASE_URL: "sqlite:////tmp/db.sqlite3"
+  DB_NAME: "neondb"
+  DB_PASS: "npg_eJbM1apz5mrd"
+  DB_HOST: "ep-divine-base-a5xd1zjw-pooler.us-east-2.aws.neon.tech"
+  DB_PORT: "5432"
+  DB_USER: "neondb_owner"
+  API_KEY: '5b3ce3597851110001cf6248e204289e2bcc4bb88223c234d5a01abb'
+
+handlers:
+  - url: /.*
+    script: auto
